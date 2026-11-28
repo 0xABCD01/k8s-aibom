@@ -97,9 +97,9 @@ echo "check-verifier-pin: pin OK: ${REQ} is the content of ./verifier at HEAD"
 
 # 2. Proxy check: the module the proxy serves must be the same tree.
 DL_JSON="$(go mod download -json "$MODULE")"
-DL_SUM="$(printf '%s' "$DL_JSON" | grep '"Sum"' | sed 's/.*: *"//; s/",\? *$//')"
-DL_DIR="$(printf '%s' "$DL_JSON" | grep '"Dir"' | sed 's/.*: *"//; s/",\? *$//')"
-DL_VERSION="$(printf '%s' "$DL_JSON" | grep '"Version"' | sed 's/.*: *"//; s/",\? *$//')"
+DL_SUM="$(printf '%s' "$DL_JSON" | grep '"Sum"' | sed 's/.*: *"//; s/",* *$//')"
+DL_DIR="$(printf '%s' "$DL_JSON" | grep '"Dir"' | sed 's/.*: *"//; s/",* *$//')"
+DL_VERSION="$(printf '%s' "$DL_JSON" | grep '"Version"' | sed 's/.*: *"//; s/",* *$//')"
 [ "$DL_VERSION" = "$REQ" ] || fail "proxy serves ${MODULE}@${DL_VERSION}, not the required ${REQ}"
 [ -n "$DL_SUM" ] && [ -n "$DL_DIR" ] || fail "go mod download -json returned no Sum/Dir for ${MODULE}@${REQ}"
 [ -d "$DL_DIR" ] || fail "downloaded module dir ${DL_DIR} is missing"
